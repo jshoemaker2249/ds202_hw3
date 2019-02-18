@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 In this homework we will use the `tips` data set. This data set is part of the `reshape2` package. You can load the data set by executing the command:
 ```{r}
 data(tips, package="reshape2")
+library(ggplot2)
 ```
 The information contained in the data is collected by one waiter, who recorded over the course of a season information about each tip he received working in one restaurant. See `?tips` for a description of all of the variables. 
 
@@ -32,16 +33,53 @@ From here, you can see that 'tips' contains Numerics, Factors, and Integers.
 
 3. Create a vector named `day` containing the day of visits in `tips`. The factor levels should be ordered from Thursday to Sunday. Also print the variable.
 ```{r}
-day <- c(tips$day)
+day <- tips$day
 levels(day) <- c('Thur', 'Fri', 'Sat', 'Sun')
+day <- factor(day, levels = c('Thur', 'Fri', 'Sat', 'Sun'))
 day
 ```
 4. Create a data frame named `female5` containing the meal paid by a female payer in a  party with size greater than or euqal to 5. Also print the data frame.
-5. How does the tipping amount (`tip`) depend on the overall bill (`total_bill`)? Describe the relationship in words. Describe at least two types of anomalies in the plot. What do they mean? Use the `ggplot2` package to make a chart.
-6. Introduce a variable `tiprate` into the data set, that incorporates the rate of tips. What is the average rate for tips?
+```{r}
+female5 <- tips[(tips$sex =="Female" & tips$size >= 5), ]
+female5
+```
+5. How does the tipping amount (`tip`) depend on the overall bill (`total_bill`)? Describe the relationship in words. Describe at least two types of anomalies in the plot. What do they mean? Use the `ggplot2` package to make a chart.  
+```{r}
+ggplot(tips, aes(x=total_bill, y=tip)) + geom_point()
+```
+
+I would describe this as a positive linear relationship, as the general trend is up and to the right. The two anomalies that appeared first to me are at approximately (7.5, 5.1) and (44.5, 2.5). The first point could be considered much higher than the customary 20% tip, and the second is much lower than 20%.
+
+6. Introduce a variable `tiprate` into the data set, that incorporates the rate of tips. What is the average rate for tips?  
+```{r}
+tiprate <- tips$tip/tips$total_bill
+mean(tiprate)
+```
+
+Meaning that the average tip rate was ~16%.
+
 7. Make a boxplot of the tip rate by time. The x-axis should be ordered by lunch and then dinner. Use the `ggplot2` package to make a chart.
-8. How does smoking behavior and gender of the person who pays impact the  relationship between tip and total bill? Find a visualization that incorporates all four variables. Interpret the result.
-9. Use ggplot2 to find a graphical summary of the relationship between day of the week and gender of the person paying the bill. What can you say about this relationship?
+```{r}
+tips$time <- factor(tips$time, levels = c('Lunch', 'Dinner'))
+ggplot(tips, aes(x=time, y=tiprate)) + geom_boxplot()
+```
+
+8. How does smoking behavior and gender of the person who pays impact the  relationship between tip and total bill? Find a visualization that incorporates all four variables. Interpret the result.  
+```{r}
+ggplot(tips, aes(x=total_bill, y=tip)) + geom_point()+ facet_grid(smoker ~ sex)
+```
+
+Starting with non-smokers, females tend to tip on a trend varying from 15-25%, while males tip slightly less on that scale. However, there are more outliers of the male, non-smoker data set.
+
+Moving into smokers, graphs of both sexes tend to follow more of a horizontal trend, meaning that they tip the same amount, regardless of total bill. While there are certainly outliers here, the comparison between smokers and non-smokers is certainly noticeable.
+
+9. Use ggplot2 to find a graphical summary of the relationship between day of the week and gender of the person paying the bill. What can you say about this relationship?  
+```{r}
+tips$day <- factor(tips$day, levels = c('Thur', 'Fri', 'Sat', 'Sun'))
+ggplot(tips, aes(x=total_bill, y=tip)) + geom_point()+ facet_grid(sex ~ day)
+```
+
+Looking at total bill vs. tips gridded by day of the week and gender, we can see that women are paying for the bill less frequently in comparison to men, and specifically on Sunday. Furthermore, males tend to have a higher total bill than women. Also, Friday seems to have the least amount of data points, meaning fewest number of tables served. This could be explained by a short shift, or just fewer people going out to eat.
 
 Note: your submission is supposed to be fully reproducible, i.e. the TA and I will 'knit' your submission in RStudio. 
 
