@@ -77,9 +77,12 @@ Moving into smokers, graphs of both sexes tend to follow more of a horizontal tr
 ```{r}
 tips$day <- factor(tips$day, levels = c('Thur', 'Fri', 'Sat', 'Sun'))
 ggplot(tips, aes(x=total_bill, y=tip)) + geom_point()+ facet_grid(sex ~ day)
+ggplot(tips, aes(x=day, fill= sex)) + geom_bar()
 ```
 
 Looking at total bill vs. tips gridded by day of the week and gender, we can see that women are paying for the bill less frequently in comparison to men, and specifically on Sunday. Furthermore, males tend to have a higher total bill than women. Also, Friday seems to have the least amount of data points, meaning fewest number of tables served. This could be explained by a short shift, or just fewer people going out to eat.
+
+When compared with the bar chart, one can see that there is a larger discrepancy between men and women who pay for the bill over the weekend. There is close to an even split on Thursday and Friday, while males pay for close to 75% of the bills on Saturday and Sunday.
 
 Note: your submission is supposed to be fully reproducible, i.e. the TA and I will 'knit' your submission in RStudio. 
 
