@@ -52,8 +52,8 @@ I would describe this as a positive linear relationship, as the general trend is
 
 6. Introduce a variable `tiprate` into the data set, that incorporates the rate of tips. What is the average rate for tips?  
 ```{r}
-tiprate <- tips$tip/tips$total_bill
-mean(tiprate)
+tips$tiprate <- tips$tip/tips$total_bill
+mean(tips$tiprate)
 ```
 
 Meaning that the average tip rate was ~16%.

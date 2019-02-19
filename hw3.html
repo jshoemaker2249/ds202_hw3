@@ -260,8 +260,8 @@ female5</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>Introduce a variable <code>tiprate</code> into the data set, that incorporates the rate of tips. What is the average rate for tips?</li>
 </ol>
-<pre class="r"><code>tiprate &lt;- tips$tip/tips$total_bill
-mean(tiprate)</code></pre>
+<pre class="r"><code>tips$tiprate &lt;- tips$tip/tips$total_bill
+mean(tips$tiprate)</code></pre>
 <pre><code>## [1] 0.1608026</code></pre>
 <p>Meaning that the average tip rate was ~16%.</p>
 <ol start="7" style="list-style-type: decimal">
